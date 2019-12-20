@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+ 
+<struts>
+	<constant value="false" name="struts.enable.DynamicMethodInvocation" />
+	<constant value="true" name="struts.devMode" />
+	<constant value="myapp" name="struts.custom.i18n.resources" />
+	<constant name="struts.ui.theme" value="simple" />
+
+	<package name="loginInterceptor" extends="struts-default">
+		<interceptors>
+			<interceptor name="authentication" class="com.mx.subastas.interceptor.AutentificacionInterceptor"></interceptor>
+			<interceptor-stack name="autentificacionStack">
+				<interceptor-ref name="authentication"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="autentificacionStack" />
+		<global-results>
+			<result name="noUser" type="redirect">/login.action</result>
+			<result name="sinPermisos">/SinPermisos.jsp</result>
+			<result name="salir">/Login.action</result>
+			
+		</global-results>
+	</package>
+
+	<package name="principal" namespace="/principal" extends="loginInterceptor">
+		<action name="login" class="com.mx.subastas.action.LoginAction" method="verificar">
+			<result name="menu">/Menu.jsp</result>
+			<result name="loginn">/Login.jsp</result>
+			<result name="usuario">/usuario.jsp</result>
+		</action>
+		<action name="regresar" class="com.mx.subastas.action.LoginAction">
+            <result>/Menu.jsp</result>
+        </action>
+	    <action name="logout" class="com.mx.subastas.action.LoginAction" method="salir">
+            <result>/Login.jsp</result>
+        </action>
+	</package>
+	
+	<package name="usuario" namespace="/usuario" extends="loginInterceptor">
+	     <action name="salir" class="com.mx.subastas.action.LoginAction" method="salir">
+		     <result name="log">/Login.jsp</result>
+	     </action>
+	     <action name="regresar" class="com.mx.subastas.action.LoginAction" method="regresar">
+		     <result name="menu">/Menu.jsp</result>
+	     </action>
+     </package>
+     
+     <package name="crudUsuario" namespace="/crudUsuario" extends="loginInterceptor" >
+	      <action name="inicioCrudUsuario" class="com.mx.subastas.action.UsuarioAction" method="cregistrar">
+			<result name="cregistrar">/RegistroUsuario.jsp</result>
+			<result name="cusuario"> /CatalogoUsuario.jsp </result>
+		</action>
+		<action name="registrar" class="com.mx.subastas.action.UsuarioAction" method="registrar" >
+		    <result name="cusuario"> /CatalogoUsuario.jsp </result>
+		    <result name="cregistrar">/RegistroUsuario.jsp</result>
+		</action>
+		<action name="usuario" class="com.mx.subastas.action.UsuarioAction" method="entrarMenu2">
+			<result name = "ctgUsuario">/CatalogoUsuario.jsp</result>
+			<result name="log">/Login.jsp</result>
+		</action>
+	    <action name="resultadoBuscar" class="com.mx.subastas.action.UsuarioAction" method="buscar" >
+		    <result name="resultadoBusc">/RegistroUsuario.jsp</result>
+		</action>
+		<action name="modificar" class="com.mx.subastas.action.UsuarioAction" method="modificar" >
+		    <result name="modifica">/CatalogoUsuario.jsp</result>
+		</action>
+		<action name="eliminar" class="com.mx.subastas.action.UsuarioAction" method="eliminar" >
+		    <result name="elimina">/CatalogoUsuario.jsp</result>
+		</action>
+	</package>
+
+	<package name="user" extends="struts-default">
+		<action name="user" method="addUser" class="user">
+			<result name="success">/success.jsp</result>
+			<result name="input">/User.jsp</result>
+		</action>
+		<action name="registrarUsuario"
+			class="com.mx.subastas.action.UsuarioAction" method="addUser">
+			<result name="cregistrar">/success.jsp</result>
+			<result name="cusuario"> /User.jsp </result>
+		</action>
+	</package>
+	
+	<package name="cperfiles" extends="loginInterceptor" namespace="/cperfiles">
+	    <action name="cperfiles" class="com.mx.subastas.action.PerfilAction" method="entrarMenu">
+            <result name="cperfiles">/CatalogoPerfil.jsp</result>
+	    </action>
+	    <action name="inicioCrudPerfil" class="com.mx.subastas.action.PerfilAction">
+		    <result>/RegistroPerfil.jsp</result>
+	    </action>
+	    <action name="registrar" class="com.mx.subastas.action.PerfilAction" method="registrar">
+		    <result name="cperfiles"> /CatalogoPerfil.jsp </result>
+		    <result name="cregistrar">/RegistroPerfil.jsp</result>
+	    </action>
+	    <action name="regresar" class="com.mx.subastas.action.PerfilAction">
+		    <result>/Menu.jsp</result>
+	    </action>
+	    <action name="resultadoBuscar" class="com.mx.subastas.action.PerfilAction" method="buscar">
+		    <result name="resultadoBusc">/RegistroPerfil.jsp </result>
+	    </action>
+	    <action name="modificar" class="com.mx.subastas.action.PerfilAction" method="modificar">
+		    <result name="modifica">/CatalogoPerfil.jsp</result>
+	    </action>
+	    <action name="eliminar" class="com.mx.subastas.action.PerfilAction" method="eliminar">
+		    <result name="elimina">/CatalogoPerfil.jsp</result>
+	    </action>
+	    <action name="regresarMenu" class="com.mx.subastas.action.PerfilAction" method="entrarMenu">
+		    <result name="cperfiles">/CatalogoPerfil.jsp</result>
+	    </action>
+     </package>
+
+
+</struts>

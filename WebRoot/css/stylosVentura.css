@@ -1,0 +1,14 @@
+div {
+ 
+  margin-bottom: 50px;
+  
+}
+#panel{
+margin-bottom: 40px;
+}
+
+#card{
+  border: #3099F0 5px double;
+  border-top-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
